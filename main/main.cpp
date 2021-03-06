@@ -24,7 +24,7 @@ int main(int argc, char ** argv)
 	std::cout << "valeur 1 :" << valeur1 << " valeur 2 :" << valeur2 << std::endl;
 
 	cout << "Openning main.so..." << endl;
-	void *handle = dlopen("./libComposant1.so", RTLD_LAZY);
+	void *handle = dlopen("./main.so", RTLD_LAZY);
 
         if(!handle){
                 cerr<< "Cannot open library: "<< dlerror() << endl;
@@ -33,8 +33,8 @@ int main(int argc, char ** argv)
 
 	// load
 	dlerror();
-	int (*function)(int, int);
-	function = (int (*)(int, int))dlsym(handle, "composant2");
+	int (*functionComposant)(int, int);
+	functionComposant = (int (*)(int, int))dlsym(handle, "composant2");
         const char *dlsym_error = dlerror();
 	if(dlsym_error){
 		cerr << "Cannot load symbol: " << dlerror()<< endl;
@@ -42,7 +42,7 @@ int main(int argc, char ** argv)
 		exit(EXIT_FAILURE);
 	}
 
-	cout << "Valeur du Composant: " << function(data1, data2) << endl;
+	cout << "Valeur du Composant: " << functionComposant(data1, data2) << endl;
 
 	// Close the library
 	cout << "Closing library ..." << endl;
